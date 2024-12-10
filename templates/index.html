@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Планировщик маршрута с учётом погоды</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('{{ url_for("static", filename="images/background.jpg") }}') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        header {
+            background: rgba(76, 175, 80, 0.8); /* полупрозрачный фон */
+            color: #fff;
+            padding: 1em;
+            text-align: center;
+        }
+
+        header img {
+            display:block;
+            margin: 0 auto 1em;
+            max-width: 100px;
+        }
+
+        main {
+            padding: 2em;
+            background: rgba(255,255,255,0.8);
+            max-width: 400px;
+            margin: 2em auto;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            margin: auto;
+            text-align: left;
+        }
+
+        label {
+            margin-bottom: 0.5em;
+        }
+
+        input {
+            margin-bottom: 1em;
+            padding: 0.5em;
+            box-sizing: border-box;
+            width: 100%;
+        }
+
+        button {
+            padding: 0.5em;
+            background: #4CAF50;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #45a049;
+        }
+
+        .icons {
+            margin-top: 2em;
+        }
+
+        .icons img {
+            max-width: 50px;
+            margin: 0 0.5em;
+            vertical-align: middle;
+        }
+
+        h2 {
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Логотип">
+    <h1>Планировщик маршрута с учётом погоды</h1>
+</header>
+<main>
+    <h2>Введите начальную и конечную точки маршрута</h2>
+    <form action="/result" method="post">
+        <label for="start">Начальная точка:</label>
+        <input type="text" id="start" name="start" required>
+
+        <label for="end">Конечная точка:</label>
+        <input type="text" id="end" name="end" required>
+
+        <button type="submit">Проверить погоду</button>
+    </form>
+
+    <div class="icons">
+        <img src="{{ url_for('static', filename='images/sunny.png') }}" alt="Солнечно" title="Солнечно">
+        <img src="{{ url_for('static', filename='images/rainy.png') }}" alt="Дождливо" title="Дождливо">
+        <img src="{{ url_for('static', filename='images/cloudy.png') }}" alt="Облачно" title="Облачно">
+        <img src="{{ url_for('static', filename='images/snowy.png') }}" alt="Снежно" title="Снежно">
+    </div>
+</main>
+</body>
+</html>

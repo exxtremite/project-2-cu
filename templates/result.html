@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Результаты оценки погоды</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background: #4CAF50;
+            color: #fff;
+            padding: 1em;
+            text-align: center;
+        }
+        main {
+            padding: 2em;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            max-width: 1200px;
+            margin-top: 2em;
+            flex-wrap: wrap;
+        }
+        .weather-section {
+            background: #fff;
+            padding: 1.5em;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 45%;
+            box-sizing: border-box;
+            margin-bottom: 2em;
+        }
+        .weather-section h2 {
+            margin-top: 0;
+        }
+        .weather-section img {
+            max-width: 100px;
+            display: block;
+            margin: 1em auto;
+        }
+        .current-weather, .forecast {
+            margin-top: 1em;
+        }
+        .forecast-day {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.5em 0;
+            border-bottom: 1px solid #ddd;
+        }
+        .forecast-day:last-child {
+            border-bottom: none;
+        }
+        .forecast-day img {
+            max-width: 50px;
+        }
+        .assessment {
+            font-weight: bold;
+            color: #d9534f;
+            text-align: center;
+        }
+        .assessment.good {
+            color: #5cb85c;
+        }
+        a {
+            color: #4CAF50;
+            text-decoration: none;
+            margin-top: 2em;
+            display: inline-block;
+        }
+        @media (max-width: 768px) {
+            .weather-section {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Результаты оценки погоды</h1>
+</header>
+<main>
+    <div class="container">
+        <div class="weather-section">
+            <h2>Начальная точка: {{ overall_result.start.city }}</h2>
+            <img src="{{ url_for('static', filename='images/' + overall_result.start.icon) }}"
+                 alt="Иконка погоды начальной точки">
+            <p class="assessment {% if 'плохая' in overall_result.start.assessment %}bad{% else %}good{% endif %}">
+                {{ overall_result.start.assessment }}
+            </p>
+            <div class="current-weather">
+                <h3>Текущая погода</h3>
+                <p>Температура: {{ overall_result.start.current_weather.temperature }}°</p>
+                <p>Скорость ветра: {{ overall_result.start.current_weather.wind_speed }} км/ч</p>
+                <p>Влажность: {{ overall_result.start.current_weather.humidity }}%</p>
+                <p>Вероятность осадков: {{ overall_result.start.current_weather.precipitation_probability }}%</p>
+            </div>
+            <div class="forecast">
+                <h3>Прогноз на 5 дней</h3>
+                {% for day in overall_result.start.forecast %}
+                <div class="forecast-day">
+                    <span>{{ day.date }}</span>
+                    <img src="{{ url_for('static', filename='images/' + day.day_icon) }}" alt="Иконка погоды">
+                    <span>Мин: {{ day.min_temp }}° / Макс: {{ day.max_temp }}°</span>
+                    <span>Осадки: {{ day.precipitation }}%</span>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="weather-section">
+            <h2>Конечная точка: {{ overall_result.end.city }}</h2>
+            <img src="{{ url_for('static', filename='images/' + overall_result.end.icon) }}"
+                 alt="Иконка погоды конечной точки">
+            <p class="assessment {% if 'плохая' in overall_result.end.assessment %}bad{% else %}good{% endif %}">
+                {{ overall_result.end.assessment }}
+            </p>
+            <div class="current-weather">
+                <h3>Текущая погода</h3>
+                <p>Температура: {{ overall_result.end.current_weather.temperature }}°</p>
+                <p>Скорость ветра: {{ overall_result.end.current_weather.wind_speed }} км/ч</p>
+                <p>Влажность: {{ overall_result.end.current_weather.humidity }}%</p>
+                <p>Вероятность осадков: {{ overall_result.end.current_weather.precipitation_probability }}%</p>
+            </div>
+            <div class="forecast">
+                <h3>Прогноз на 5 дней</h3>
+                {% for day in overall_result.end.forecast %}
+                <div class="forecast-day">
+                    <span>{{ day.date }}</span>
+                    <img src="{{ url_for('static', filename='images/' + day.day_icon) }}" alt="Иконка погоды">
+                    <span>Мин: {{ day.min_temp }}° / Макс: {{ day.max_temp }}°</span>
+                    <span>Осадки: {{ day.precipitation }}%</span>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <a href="/">Назад</a>
+</main>
+</body>
+</html>
